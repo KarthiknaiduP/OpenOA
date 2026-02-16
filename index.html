@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OpenOA Cloud App</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #020617);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        button {
+            background: linear-gradient(90deg, #38bdf8, #0ea5e9);
+            border: none;
+            padding: 14px 26px;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(56,189,248,0.35);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(56,189,248,0.5);
+        }
+
+        .status-box {
+            margin-top: 35px;
+            padding: 18px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 14px;
+            min-height: 50px;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: gray;
+            vertical-align: middle;
+        }
+
+        .online { background: #22c55e; }
+        .offline { background: #ef4444; }
+
+        .footer {
+            margin-top: 35px;
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h1>🚀 OpenOA Cloud App</h1>
+        <p class="subtitle">Operational Analytics Backend Monitor</p>
+
+        <button onclick="checkHealth()">Check Backend Status</button>
+
+        <div class="status-box" id="result">
+            <span class="dot"></span>
+            Waiting for status check...
+        </div>
+
+        <div class="footer">
+            Powered by FastAPI + Render
+        </div>
+    </div>
+
+    <script>
+        function checkHealth() {
+
+            const resultBox = document.getElementById("result");
+
+            resultBox.innerHTML =
+                '<span class="dot"></span> Checking backend...';
+
+            fetch("https://openoa-gppc.onrender.com/health")
+                .then(res => res.json())
+                .then(data => {
+                    resultBox.innerHTML =
+                        '<span class="dot online"></span> Backend Online ✅';
+                })
+                .catch(err => {
+                    resultBox.innerHTML =
+                        '<span class="dot offline"></span> Backend Offline ❌';
+                });
+        }
+    </script>
+
+</body>
+</html>
+
